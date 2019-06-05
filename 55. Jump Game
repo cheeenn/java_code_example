@@ -1,0 +1,14 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        int len = nums.length;
+        if(len<1) return false;
+        
+        int lastpos = len-1;
+        //0 unknown, 1 reach end pos, 2 unreach end pos
+        for(int i =len-1; i>=0;i--){
+            if(i+nums[i]>=lastpos) lastpos = i;
+        }
+        
+        return lastpos == 0;
+    }
+}
