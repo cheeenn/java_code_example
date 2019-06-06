@@ -1,0 +1,68 @@
+class Solution {
+    int[][] row;
+    int[][] col;
+    int[][] block;
+    int N;
+    public boolean solved = false;
+    public void solveSudoku(char[][] board) {
+        N = board.length;
+        row  = new int[N][N];
+        col  = new int[N][N];
+        block= new int[N][N];
+        
+        //initial the record
+        for(int i = 0 ; i <N ; i++){
+            for(int j = 0 ; j < N; j++){
+                if(board[i][j]!='.'){
+                    int t =board[i][j]-'0'-1;
+                    place(board,i,j,t);
+                }
+            }
+        }
+        rec(board,0,0);
+    }
+    
+    public void rec(char[][] board, int i , int j){
+        
+        if(board[i][j]=='.'){
+            for(int t = 0 ; t < N; t++ ){
+                //check dup 
+                if(!check(board,i,j,t))continue;
+                place(board,i,j,t);
+                nextstep(board,i,j);
+                if(!solved) remove(board,i,j,t);
+            }
+        }
+        else nextstep(board,i,j);
+    }
+    
+    public boolean check(char[][] board, int i , int j,int t){
+        // System.out.println("check:"+i +" " + j  + " ：" + t );
+        int box_index = (i/3)*3+j/3;
+        return row[i][t]+col[j][t]+block[box_index][t]==0;
+    }
+    public void nextstep(char[][] board, int i , int j){
+        if(i==N-1&&j==N-1) solved = true;
+        else{
+            if(j==N-1) rec(board, i+1, 0);
+            else rec(board,i,j+1);
+        }
+    }
+    public void place(char[][] board, int i , int j, int t){
+       // System.out.println("place:"+i +" " + j  + " ：" + t );
+        int box_index = (i/3)*3+j/3;
+        row[i][t]=1;
+        col[j][t]=1;
+        block[box_index][t]=1;
+        board[i][j] = (char) (t+1+'0');
+    }
+    public void remove(char[][] board, int i , int j, int t){
+       // System.out.println("remove:"+i +" " + j  + " ：" + t );
+        int box_index = (i/3)*3+j/3;
+        row[i][t]=0;
+        col[j][t]=0;
+        block[box_index][t]=0;
+        board[i][j] = '.';
+    }
+    
+}
