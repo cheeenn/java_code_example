@@ -1,0 +1,19 @@
+class Solution {
+    public int jump(int[] nums) {
+        
+        int furtherpos = 0;
+        int minjumpT = 0;
+        int curend = 0;
+        
+        // only watch the state ahead nums.length-1 position
+        for(int i =0 ; i < nums.length-1; i++){
+            if(i+nums[i]>furtherpos)furtherpos = i+nums[i];
+            if(i==curend){
+                minjumpT ++;
+                curend = furtherpos;
+            }
+        }
+        
+        return minjumpT;
+    }
+}
