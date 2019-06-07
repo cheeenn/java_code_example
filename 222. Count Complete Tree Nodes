@@ -1,0 +1,30 @@
+class Solution {
+    public int max =0;
+    public int t = 1;
+    public int count =0;
+    
+    public int countNodes(TreeNode root) {
+        if(root == null) return 0;
+        int h = getH(root,0);
+        rec(root,h,0);
+        return max-count;
+    }
+    public void rec(TreeNode root,int h,int lv){
+     
+        if(lv<h&& root == null){count++;return;}
+        if(lv>=h){}
+        else{
+            rec(root.right,h,lv+1);
+            rec(root.left,h,lv+1);
+        }       
+    }
+    public int getH(TreeNode root,int h){
+        if(root == null ) return h ;
+        if(max!=0) {t <<=1; max += t;}
+        else max =1;
+        h++;
+        h=getH(root.left,h);
+        return h;    
+    }
+    
+}
