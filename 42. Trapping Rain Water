@@ -1,0 +1,65 @@
+class Solution {
+    public int ans = 0;
+    public int trap(int[] height) {
+        int len = height.length;
+        //int prevpop = 0;
+        if(len<3) return 0;
+                
+        boolean find = false;
+        Stack<Units> stack = new Stack<>();
+        
+        for(int i =1; i< len; i++){
+            //update 
+            int prev = height[i-1];
+            int cur = height[i];
+            
+            //find start 
+            if(!find && cur<prev) find = true;
+            if(find){
+                if(cur<prev) {        //store left limit  
+                    Units u = new Units(i,height[i-1],height[i]);
+                    stack.push(u);
+                } 
+                else if(cur>prev){    //reach right limit
+                    if(stack.size()==0)  continue;
+                    Units leftlimit = stack.peek();
+                    int l = leftlimit.value;
+                    int j = leftlimit.index;
+                    int base = leftlimit.base;
+                    int lowbound = Math.min(l,cur);
+                    int dis = i-j;
+            
+                    ans+= (lowbound-base)*dis;
+
+                    //check left & right limit
+                    if(l<cur) {
+                        stack.pop();
+                        i--;
+                    }
+                    else if(l==cur) stack.pop();
+                    else { //when left limit is big, moving right limit,update base
+                         Units te = stack.pop();
+                         te.setbase(cur);
+                         stack.push(te);
+                    } 
+                }                
+            }
+             
+        }
+        return ans;
+    }
+
+}
+public class Units{
+    int index;
+    int value;
+    int base;
+    public Units(int index, int value,int base){
+        this.index = index;
+        this.value = value;
+        this.base  = base;
+    }
+    public void setbase(int base){
+        this.base = base;
+    }
+}
