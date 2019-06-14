@@ -1,0 +1,29 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+        return dfs(root,limit,0);
+    }
+    public TreeNode dfs(TreeNode root, int limit, int sum){
+        if(root == null) return root;
+        //check reach leave
+        if(root.left == null && root.right == null){
+            if(sum+root.val<limit) return null;
+            return root;
+        }        
+        
+        root.left  = dfs(root.left ,limit,sum+root.val);
+        root.right = dfs(root.right,limit,sum+root.val);
+        
+        //check new leave
+        if(root.left == null && root.right == null){ return null;}
+        return root;
+    }
+}
