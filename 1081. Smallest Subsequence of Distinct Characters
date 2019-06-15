@@ -1,0 +1,25 @@
+class Solution {
+    public String smallestSubsequence(String text) {
+        int[] record =new int[26];
+        StringBuilder sb = new StringBuilder();
+        for(char a : text.toCharArray()) record[a-'a']++;
+        Stack<Character> stack = new Stack<>();
+        
+        for(char a : text.toCharArray()){
+           record[a-'a']--;
+           if( stack.contains(a)){continue;}
+            
+           if(!stack.contains(a) ){
+               while(!stack.isEmpty()&&stack.peek()>a && record[stack.peek()-'a'] > 0){
+                   stack.pop();
+               }
+               stack.push(a);
+           }
+            
+        }
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+        return sb.reverse().toString();
+    }
+}
