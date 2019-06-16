@@ -1,0 +1,45 @@
+class Solution {
+    public class Mycomparator implements Comparator<Item>{
+        @Override
+        public int compare(Item a, Item b ){
+            return b.value-a.value;
+        }
+    }
+    public int largestValsFromLabels(int[] values, int[] labels, int num_wanted, int use_limit) {
+        //Mycomparator myc = new Mycomparator();
+        //PriorityQueue<Item> maxheap = new PriorityQueue<>(myc);
+        PriorityQueue<Item> maxheap = new PriorityQueue<>((a,b)->b.value-a.value);
+        for(int i =0; i<values.length; i++){
+            maxheap.offer(new Item(values[i],labels[i]));
+        }
+        int sum =0;
+        // label times
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int count =0;
+        while(!maxheap.isEmpty()&&count<num_wanted){
+            Item temp = maxheap.poll();
+            if(map.containsKey(temp.label)){
+                int t = map.get(temp.label);
+                if(t<use_limit){ map.put(temp.label,t+1); sum+=temp.value;count++;}
+            }
+            else{
+                map.put(temp.label,1); 
+                sum+=temp.value;
+                count++;
+            }
+            
+        }
+        return sum;
+    }
+    
+}
+
+class Item{
+    public int value;
+    public int label;
+    public Item(int value,int label){
+        this.value = value;
+        this.label = label;
+    }
+    
+}
