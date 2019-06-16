@@ -1,0 +1,12 @@
+class Solution {
+    public void duplicateZeros(int[] arr) {
+        for(int i =0; i < arr.length; i++){
+            if(arr[i]==0) {move(arr,i+1);i+=1;}
+        }
+    }
+    public void move(int[] arr, int i ){
+        for(int a = arr.length-1; a>=i;a--){
+            arr[a]= arr[a-1];
+        }
+    }
+}
