@@ -1,0 +1,68 @@
+class Solution {
+    //bfs
+    Queue<Index> pq = new LinkedList<>();
+    int len;
+    int[][] visited;
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        len = grid.length;
+        if(len<1||len>100) return -1;
+        if(grid[0][0]==1||grid[len-1][len-1]==1) return -1;
+        else grid[0][0]=1;
+        visited = new int[len][len];
+        check(grid,0,0);
+        while(!pq.isEmpty()){
+            Index t = pq.poll();
+            check(grid,t.i,t.j);
+        }
+        return grid[len-1][len-1]==0? -1:grid[len-1][len-1] ;
+    }
+    class Index{
+        int value;
+        int i;
+        int j;
+        public Index(int value,int i , int j ){
+            this.i = i ;
+            this.j = j ;
+            this.value = value;
+        }
+    }
+    public void check(int[][] grid,int i , int j){
+        int cur = grid[i][j];
+        
+        if(i-1>=0&&j-1>=0){
+            given(grid,i-1,j-1,cur);
+        }
+        if(i-1>=0){
+            given(grid,i-1,j,cur);
+        }
+        if(i-1>=0&&j+1<len){
+            given(grid,i-1,j+1,cur);
+        }
+        if(j-1>=0){
+            given(grid,i,j-1,cur);
+        }
+        if(j+1<len){
+            given(grid,i,j+1,cur);
+        }
+        if(i+1<len&&j-1>=0){
+            given(grid,i+1,j-1,cur);
+        }
+        if(i+1<len){
+            given(grid,i+1,j,cur);
+        }
+        if(i+1<len&&j+1<len){
+            given(grid,i+1,j+1,cur);
+        } 
+
+    }
+    public void given(int[][] grid,int i , int j,int a){
+        if(visited[i][j]==1) return;
+        else  visited[i][j]=1;
+        if(grid[i][j]==1) {visited[i][j]=1;return;}
+        if( grid[i][j]>a+1 || grid[i][j]==0){
+            Index t = new Index(grid[i][j],i,j);
+            pq.offer(t);
+            grid[i][j]= a+1;
+        }
+    }
+}
