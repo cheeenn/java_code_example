@@ -31,12 +31,13 @@ class Solution {
                 ch = char1[i - 1];
                 i--;
                 j--;
-            } else if (dp[i - 1][j] == dp[i][j]) {
-                ch = char1[i - 1];
-                i--;
             } else if (dp[i][j - 1] == dp[i][j]) {
                 ch = char2[j - 1];
                 j--;
+            } else if (dp[i - 1][j] == dp[i][j]) {
+                ch = char1[i - 1];
+                i--;
+
             }
             sb.append(ch);
         }
