@@ -1,0 +1,39 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+        int len = nums.length;
+        if(len<1)return 0;
+        int max =nums[0];
+        if(len==1)return max;
+        int cur =0;
+        int prev = 0;
+        int d =1;
+        int t = 1;
+        for(int i =0; i<len; i++){
+            if(nums[i]==0){
+                max=Math.max(max,cur);
+                cur = 0;
+                prev = 0;
+                d = 1;
+                t = 1;
+                continue;
+            }
+            
+            if(prev==0)prev =1;
+            if(t!=1){d*=nums[i];max = Math.max(max,d);}
+             prev*=nums[i]; 
+            if(nums[i]>0){
+                if(cur==0)cur =1;
+                cur*=nums[i];  
+                max = Math.max(max,cur); 
+            }
+            else{
+                if(prev>cur){cur= prev;max = Math.max(max,prev);}
+                else cur =0;
+                if(t==1)t= nums[i];
+            }
+        }
+        if(prev>0)max=Math.max(max,prev);
+
+        return max;
+    }
+}
