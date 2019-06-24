@@ -1,0 +1,41 @@
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null||head.next ==null) return head;
+        ListNode mid = Getmid(head);
+        ListNode secondhead = mid.next;
+        mid.next = null;
+        //System.out.println(secondhead.val);
+        ListNode l = sortList(head);
+        ListNode r = sortList(secondhead);
+        return merge(l,r);
+        
+    }
+    public ListNode merge(ListNode l, ListNode r){
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while(l!=null&&r!=null){
+            if(l.val>r.val){
+                cur.next = r;
+                r = r.next;
+            }
+            else{
+                cur.next = l;
+                l = l.next;
+            }
+            cur = cur.next;
+        }    
+        if(l!=null) cur.next = l;
+        if(r!=null) cur.next = r;
+        return dummy.next;
+    }
+    
+    public ListNode Getmid(ListNode head){
+        ListNode fast = head;
+        ListNode slow = fast;
+        while(fast.next!=null&&fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
