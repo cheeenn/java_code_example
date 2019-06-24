@@ -1,0 +1,35 @@
+class Solution {
+    class Unit{
+        int index;
+        int value;
+        public Unit(int index, int value){
+            this.index = index;
+            this.value = value;
+        }
+    }
+    
+    public int[] maxSlidingWindow(int[] nums, int k) {
+       PriorityQueue<Unit> queue = new PriorityQueue<>((n1,n2)->n2.value-n1.value);
+        int len = nums.length;
+        if(len<1)return nums;
+        int ansl = len-k+1;
+        int[] ans = new int[ansl];
+        int count = 0;
+        for(int i = 0 ; i< len ; i++){
+            int cur = nums[i];
+            if(count<k){
+                while(!queue.isEmpty()&&queue.peek().value<=cur)queue.poll();
+                queue.offer(new Unit(i,cur));
+                count++;
+                if(count==k)ans[0] = queue.peek().value;
+            }
+            else{
+                int d_head = nums[i-k];
+                while(!queue.isEmpty()&&(queue.peek().value<=cur||queue.peek().index <= i-k))queue.poll();
+                queue.offer(new Unit(i,cur));               
+                ans[i-k+1] = queue.peek().value;
+            }
+        }
+        return ans;
+    }
+}
