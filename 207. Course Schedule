@@ -1,0 +1,30 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        HashMap<Integer, Set<Integer>> graph = new HashMap<>();
+        int len = prerequisites.length;
+        if(len<0) return false;
+        if(len<2) return true;
+        for(int[] a : prerequisites){
+            graph.computeIfAbsent(a[0],x->new HashSet<Integer>()).add(a[1]);
+        }
+        
+        // -0 unvisited -1 visiting -2 visited
+        int[] visited = new int[numCourses];
+        for(int i : graph.keySet()){
+            if(!dfs(graph,visited,i)) return false;
+        }
+        return true;
+    }
+    
+    public boolean dfs(HashMap<Integer,Set<Integer>> graph,int[] visited,int cur){
+            if(visited[cur] == 2) return true;
+            if(visited[cur] == 1) return false;
+            //means unvisited
+            visited[cur] =1; //so now visiting this value
+            if(graph.containsKey(cur)){
+                    for(int i: graph.get(cur)) if(!dfs(graph,visited,i)) return false;
+            }
+            visited[cur] =2;
+            return true;
+    }
+}
