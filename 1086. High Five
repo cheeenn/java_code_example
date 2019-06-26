@@ -1,0 +1,38 @@
+class Solution {
+    private class Myc implements Comparator<int[]>{
+        @Override
+        public int compare(int[] a , int[] b ){
+            if(a[0]!=b[0]) return a[0]-b[0];
+            else return b[1]-a[1];
+        }
+    }
+    public int[][] highFive(int[][] items) {
+        Myc myc = new Myc();
+        Arrays.sort(items,myc);
+        int i = 0;
+        int cur = items[0][0]+1;
+        int sum = 0 ;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int[] a : items){
+            if(cur==a[0])continue;
+            i++;
+            sum+=a[1];
+            if(i==5){ 
+                i =0;
+                cur = a[0];
+                map.put(cur,sum/5);
+                sum=0;
+            }
+        }
+        
+        int size = map.size();
+        int[][] ans = new int[size][2];
+        i=0;
+        for(int key : map.keySet()){
+            ans[i][0] = key;
+            ans[i][1] = map.get(key);
+            i++;
+        }
+        return ans;
+    }
+}
