@@ -1,0 +1,23 @@
+///////////////////////////////////////////n^2 time complexity\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int len = nums.length;
+        if(len<2) return len;
+        int[] record = new int[len+1];
+        record[len-1] = 1;
+        int ans = -1;
+        for(int i = len-2; i>=0;i--){
+            int cur = nums[i];
+            int max = 0;
+            for(int j = i+1; j<len; j++){
+                if(cur<nums[j]&&max<record[j]){
+                    max = record[j];
+                }
+            }
+            record[i] = max+1;
+            if(record[i]>ans) ans = record[i];
+        }
+        return ans;
+    }
+}
