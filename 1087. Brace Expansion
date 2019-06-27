@@ -1,0 +1,67 @@
+class Solution {
+    public String[] expand(String S) {
+        int len = S.length();
+        int index = 0;
+        boolean in = false;
+        Set<Character> set = new HashSet<>();
+        // index start from 0
+        HashMap<Integer, Set<Character> > map = new HashMap<>();
+        // read the string
+        for(char a :S.toCharArray()){
+            if(a == '{') {
+                in = true;
+                continue;
+            }
+            if( a == '}'){
+                in = false;
+                map.put(index,set);
+                index++;
+                set = new HashSet<>();
+                continue;
+            }
+                
+            if( !in ){                                                  //out of burly brackets
+                Set<Character> t = new HashSet<>();t.add(a);
+                map.put(index,t);index++;}       
+            else {                                                       //in burly brackets
+                if(Character.isLetter(a))set.add(a);
+            }
+        }
+        
+        // build the string
+        Queue<StringBuilder> list = new LinkedList<>();
+        for(int key: map.keySet()){
+            Set<Character> t = map.get(key);
+            int step = list.size();
+            //System.out.println("set "+t);
+            //System.out.println("list "+list);
+            if(list.size()==0){
+                for(char a : t){
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(a);
+                    list.offer(sb);
+                }
+            }
+            else{
+                for(int j =0; j< step; j++){
+                    StringBuilder sb = list.poll();
+                    for(char a :t){
+                        sb.append(a);
+                        list.offer(new StringBuilder(sb.toString()));
+                        sb.deleteCharAt(sb.length()-1);
+                    }
+                }
+            }
+        }
+        
+        //write the string
+        int i = 0;
+        String[] ans = new String[list.size()];
+        for(StringBuilder sb : list){
+            ans[i] = sb.toString();
+            i++;
+        }
+        return ans;
+    }
+        
+}
