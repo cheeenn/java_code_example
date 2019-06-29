@@ -1,0 +1,28 @@
+class Solution {
+    public int numKLenSubstrNoRepeats(String S, int K) {
+        int len = S.length(); 
+        if(len<K) return 0;
+        int ans=0;
+        char[] cs = S.toCharArray();
+        int[] check = new int[26];
+        for(int i = 0; i < K; i++){
+            char a = cs[i];
+            check[a-'a']++;
+        }
+        if(nodup(check))ans++;
+        for(int i = K;i<len;i++){
+            char new_in = cs[i];
+            char de_head = cs[i-K];
+            check[de_head-'a']--;
+            check[new_in-'a']++;
+            if(nodup(check))ans++;
+        }
+        return ans;
+    }
+    public boolean nodup(int[] check){
+        for(int a : check){
+            if(a>1) return false;
+        }
+        return true;
+    }
+}
