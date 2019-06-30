@@ -1,0 +1,17 @@
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int remain = candies;
+        int cur = 1;
+        int[] ans = new int[num_people];
+        int i = 0;
+        while(remain>=cur){
+            ans[i]+=cur;
+            remain-=cur;
+            i++;
+            if(i==num_people) i = 0;
+            cur++;
+        }
+        if(remain!=0) ans[i] += remain;
+        return ans;
+    }
+}
