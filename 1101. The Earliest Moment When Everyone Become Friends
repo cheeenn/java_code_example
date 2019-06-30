@@ -1,0 +1,50 @@
+class Solution {
+    private class Myc implements Comparator<int[]>{
+        @Override
+        public int compare(int[] a1, int[] a2){
+            return a1[0]-a2[0];
+        }
+    }
+    public int earliestAcq(int[][] logs, int N) {
+        Myc myc = new Myc();
+        Arrays.sort(logs,myc);
+        Unionfind unionf = new Unionfind(N);
+        for(int[] log : logs){
+            unionf.Union(log[1],log[2],log[0]);
+            
+        }
+        if(unionf.check()) return unionf.ans;
+        return -1;
+    }
+
+    private class Unionfind{
+        int[] parent;
+        int ans = -1;
+        public Unionfind(int N){
+            parent= new int[N];
+            for(int i =0; i< N; i++){
+                parent[i] = i;
+            }
+        }
+        public int Find(int x){
+            if(x != parent[x]){
+                parent[x] = Find(parent[x]);
+            }
+            return parent[x];
+        }
+        public void Union(int x ,int y,int data){
+            int px = Find(x);
+            int py = Find(y);
+            //System.out.println(px+" "+ py);
+            if(px!=py) ans = data;
+            parent[px] = py;
+        }
+        public boolean check(){
+            int t = Find(0);          
+            for(int a = 0; a<parent.length; a++){
+                if(Find(a)!=t)return false;
+            }
+            return true;
+        }
+    }
+}
