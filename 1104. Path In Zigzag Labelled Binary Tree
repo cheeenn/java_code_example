@@ -1,0 +1,36 @@
+class Solution {
+    public List<Integer> pathInZigZagTree(int label) {
+        LinkedList<Integer> ans = new LinkedList<>();
+        if(label==1){ans.add(1); return ans;}
+        int i =2;
+        int c = 1;
+        while(i<=label){
+            i*=2;
+            c++;
+        }
+        //one level before this label
+        int end = i/2-1;
+        int start= i/4;
+        
+        Stack<Integer> stack = new Stack<>();
+        stack.push(label);
+        label/=2;
+        int next = 0;
+        //odd , even c are different
+        if(c%2==0)next = start+Math.abs(label-end);
+        else next = start+Math.abs(label-end);
+        stack.push(next);
+        int temp =1;
+        while(label > 1&&next>1){
+            label/=2;
+            next/=2;            
+            if(temp%2==0)stack.push(next);
+            else stack.push(label);
+            temp++;
+        }
+        while(!stack.isEmpty()){
+            ans.add(stack.pop());
+        }
+        return ans;
+    }
+}
