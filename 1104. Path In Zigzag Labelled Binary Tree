@@ -15,11 +15,10 @@ class Solution {
         Stack<Integer> stack = new Stack<>();
         stack.push(label);
         label/=2;
-        int next = 0;
         //find next
-        next = start+Math.abs(label-end);
-
+        int next = start+Math.abs(label-end);
         stack.push(next);
+        
         int temp =1;
         while(label > 1&&next>1){
             label/=2;
