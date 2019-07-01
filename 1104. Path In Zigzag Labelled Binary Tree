@@ -16,9 +16,9 @@ class Solution {
         stack.push(label);
         label/=2;
         int next = 0;
-        //odd , even c are different
-        if(c%2==0)next = start+Math.abs(label-end);
-        else next = start+Math.abs(label-end);
+        //find next
+        next = start+Math.abs(label-end);
+
         stack.push(next);
         int temp =1;
         while(label > 1&&next>1){
