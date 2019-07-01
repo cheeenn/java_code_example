@@ -1,6 +1,6 @@
 class Solution {
     public List<Integer> pathInZigZagTree(int label) {
-        LinkedList<Integer> ans = new LinkedList<>();
+        List<Integer> ans = new ArrayList<>();
         if(label==1){ans.add(1); return ans;}
         int i =2;
         int c = 1;
@@ -11,8 +11,8 @@ class Solution {
         //one level before this label
         int end = i/2-1;
         int start= i/4;
-
-        ans.add(label);
+        
+        ans.add(label);  
         label/=2;
         //find next
         int next = start+Math.abs(label-end);
