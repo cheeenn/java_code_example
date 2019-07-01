@@ -11,25 +11,23 @@ class Solution {
         //one level before this label
         int end = i/2-1;
         int start= i/4;
-        
-        Stack<Integer> stack = new Stack<>();
-        stack.push(label);
+
+        ans.add(label);
         label/=2;
         //find next
         int next = start+Math.abs(label-end);
-        stack.push(next);
+        ans.add(next);
         
         int temp =1;
         while(label > 1&&next>1){
             label/=2;
             next/=2;            
-            if(temp%2==0)stack.push(next);
-            else stack.push(label);
+            if(temp%2==0)ans.add(next);
+            else ans.add(label);
             temp++;
         }
-        while(!stack.isEmpty()){
-            ans.add(stack.pop());
-        }
+
+        Collections.reverse(ans);
         return ans;
     }
 }
