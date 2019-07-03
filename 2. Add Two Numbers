@@ -1,0 +1,48 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if(l1==null)return l2;
+        if(l2==null)return l1;
+        int carry = 0;
+        int len1 = getl(l1);
+        int len2 = getl(l2);
+        if(len1<len2)
+        {
+            ListNode l = l1;
+            l1=l2;
+            l2 = l;                     
+        }
+        ListNode prev = null;
+        ListNode dummy = new ListNode(0);
+        dummy.next = l1;
+        while(l1!=null||l2!=null){
+            if(l2!=null)l1.val=l1.val+l2.val+carry;
+            else l1.val+=carry;
+            if(l1.val>9){carry = 1;l1.val=l1.val%10;}
+            else carry=0;
+            prev = l1;
+            l1=l1.next;
+            if(l2!=null)l2=l2.next; 
+        }
+        if(l1==null&&l2==null){
+            if(carry!=0) prev.next = new ListNode(carry);
+        }
+        return dummy.next;
+    }
+    public int getl(ListNode l){
+        int i  = 0 ;
+        while(l!=null){
+            l=l.next;
+            i++;
+        }
+        return i;
+    }
+
+}
