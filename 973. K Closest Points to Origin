@@ -1,0 +1,25 @@
+class Solution {
+    public class dis{
+        int val;
+        int[] index=new int[2];
+        public dis(int x, int y){
+            this.index[0] =x;
+            this.index[1] =y;
+            this.val = x*x+y*y;
+        }
+    }
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<dis> pq = new PriorityQueue<>((d1,d2)->d1.val-d2.val);
+        for(int i = 0 ; i<points.length;i++){
+                dis d = new dis(points[i][0],points[i][1]);
+                pq.offer(d);
+        }
+        int[][] ans = new int[K][2];
+        while(K>0){
+            ans[K-1] = pq.poll().index;
+            K--;
+        }
+        return ans;
+    }
+
+}
