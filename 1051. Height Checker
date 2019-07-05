@@ -1,0 +1,17 @@
+class Solution {
+    public int heightChecker(int[] heights) {
+        int len = heights.length;
+        int count = 0;
+        if(len==1) return count;
+        // int[] a = new int[len];
+        // System.arraycopy(heights,0,a,0,len);
+        //int[] a = heights.clone();
+        int[] a = Arrays.copyOf(heights,len);
+        Arrays.sort(a);
+
+        for(int i =0; i <len; i++){
+            if(heights[i]!=a[i])count++;
+        }
+        return count;
+    }
+}
