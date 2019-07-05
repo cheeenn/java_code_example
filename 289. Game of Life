@@ -1,0 +1,46 @@
+class Solution {
+    int row;
+    int col;
+    
+    public void gameOfLife(int[][] board) {
+        row = board.length;
+        if(row<1) return;
+        col = board[0].length;
+        for(int i =0 ;i <row ; i++){
+            for(int j = 0 ; j <col; j++){
+                board[i][j] = check(i,j,board);
+            }
+        }
+        for(int i =0 ;i <row ; i++){
+            for(int j = 0 ; j <col; j++){
+               if(board[i][j] == 2) board[i][j] = 1;
+               if(board[i][j] ==-1) board[i][j] = 0;
+            }
+        }
+    }
+    // -1 die in the coming generation,0 keep dead, 1 keep living, 2 reproduction in the coming generation, 
+    public int check(int i,int j, int [][] board){
+        int cur = board[i][j];
+        int count =0;
+        if(i-1>=0&&j-1>=0&&(board[i-1][j-1]==1||board[i-1][j-1]==-1))count++;
+        if(i-1>=0&&j>=0&&(board[i-1][j]==1||board[i-1][j]==-1))      count++;
+        if(i-1>=0&&j+1<col&&(board[i-1][j+1]==1||board[i-1][j+1]==-1))count++;
+        if(i>=0&&j-1>=0&&(board[i][j-1]==1||board[i][j-1]==-1))       count++;
+        if(i>=0&&j+1<col&&(board[i][j+1]==1||board[i][j+1]==-1))      count++;
+        if(i+1<row&&j-1>=0&&(board[i+1][j-1]==1||board[i+1][j-1]==-1))count++;
+        if(i+1<row&&j>=0&&(board[i+1][j]==1||board[i+1][j]==-1))      count++;
+        if(i+1<row&&j+1<col&&(board[i+1][j+1]==1||board[i+1][j+1]==-1))count++;
+        if(cur==0){
+            //reproduction
+            if(count==3) return 2;
+            else return 0;
+        }
+        else{
+            //cur == 1
+            if(count<2) return -1;                 //under pop  die
+            else if(count==2||count==3) return 1;  //hold
+            else return -1;                        //over pop   die
+        }
+
+    }
+}
