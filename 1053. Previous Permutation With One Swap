@@ -1,0 +1,17 @@
+class Solution {
+    public int[] prevPermOpt1(int[] A) {
+        int len = A.length;
+        int l = len-2;
+        int r = len-1;
+        //make sure where to start 
+        while(l>=0&&A[l]<=A[l+1])l--;
+        if(l<0) return A;
+        //find which position switch with left
+        while(A[l]<=A[r])r--;
+        while(A[r]==A[r-1])r--;
+        int temp = A[l];
+        A[l]=A[r];
+        A[r]=temp;
+        return A;
+    }
+}
