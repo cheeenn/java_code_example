@@ -1,0 +1,45 @@
+class Solution {
+    class Unit{
+        int val;
+        int n;
+        public Unit(int val,int n){
+            this.val = val;
+            this.n = n;
+        }
+    }
+    public int[] rearrangeBarcodes(int[] barcodes) {
+        int len = barcodes.length;
+        if(len<3)return barcodes;
+        int[] ans = new int[len];
+        //count each number 
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i =0; i<len; i++){
+            int cur = barcodes[i];
+            if(map.containsKey(cur)){
+                map.put(cur,map.get(cur)+1);
+            }
+            else map.put(cur,1);
+        }
+        //sort by the n of number
+        PriorityQueue<Unit> pq = new PriorityQueue<>((a,b)->b.n-a.n);  
+        for(int key : map.keySet()){
+            pq.add(new Unit(key,map.get(key)));    
+        }
+        
+        //build the answer
+        int i =0;
+        while(!pq.isEmpty()){
+            Unit c = pq.poll();
+            while(i<len&&c.n>0){
+                ans[i]=c.val;
+                c.n--;
+                i+=2;
+                if(i>=len){i=1;}
+            }
+           
+        }
+
+        return ans;
+        
+    }
+}
