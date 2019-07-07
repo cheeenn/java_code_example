@@ -1,0 +1,27 @@
+class Solution {
+    public int[] maxDepthAfterSplit(String seq) {
+        int len = seq.length();
+        int[] ans = new int[len];
+        int[] record = new int[len];
+        if(len<3)return ans;
+        Stack<Character> stack = new Stack<>();
+        int total_dep = 0;
+        int c = 0;
+        char[] cs = seq.toCharArray();
+        for(int i =0 ; i<len ; i++){
+            
+            if(cs[i]=='(') {c++;record[i] = c;}
+            else if(cs[i]==')'){record[i] = c;c--;}
+            
+            //update max depth
+            if(c>total_dep) total_dep = c;
+        }
+        if(total_dep<2) return ans;
+        int half = total_dep/2;
+        for(int i = 0 ; i< len ; i++){
+            if(record[i]<=half) ans[i]=0;
+            else ans[i] = 1;
+        }
+        return ans;
+    }
+}
