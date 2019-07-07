@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    List<TreeNode> list;
+    Set<Integer> d;
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        d = new HashSet<>();
+        list= new ArrayList<>();
+        for(int a : to_delete){
+            d.add(a);
+        }
+        process(root);
+        if(root!=null&&!d.contains(root.val))list.add(root);
+        return list;
+    }
+    public TreeNode process(TreeNode root){
+        if(root==null) return null;
+        int cur = root.val;
+        //check current node delete or not
+        if(d.contains(cur)){
+            //current node not a leave
+            if(root.left!=null){
+               if(!d.contains(root.left.val))list.add(root.left);
+               process(root.left);
+            }
+            if(root.right!=null){
+               if(!d.contains(root.right.val))list.add(root.right);   
+               process(root.right);
+            }
+            //curent node is a leave
+            return null;
+        }
+        root.left=process(root.left);
+        root.right=process(root.right);
+        return root;
+    }
+}
