@@ -1,0 +1,27 @@
+class Solution {
+    Random rand ;
+    int[] a ;
+    int[] ori;
+    public Solution(int[] w) {
+        this.rand = new Random();
+        this.ori = w;
+        this.a = w.clone();
+        for(int i = 1 ; i < a.length; i ++){
+            a[i]+=a[i-1];
+        }
+    }
+    
+    public int pickIndex() {
+        //if(ori.length==1)return 0; 
+        int guess = rand.nextInt(a[a.length-1])+1;
+        int pos = Arrays.binarySearch(a,guess);
+        if(pos<0)pos=-(pos+1);
+        return pos;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
