@@ -3,7 +3,7 @@ class Solution {
         int[] parent;
         public Union(int size){
             this.parent = new int[size+1];
-            for(int i = 0; i < size ; i ++) parent[i] = i;
+            for(int i = 0; i < size+1 ; i ++) parent[i] = i;
         }
         public int find(int x){
             if(x!=parent[x]){
