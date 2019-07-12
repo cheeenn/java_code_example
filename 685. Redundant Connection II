@@ -13,7 +13,7 @@ class Solution {
         public boolean union(int x, int y){
             int px = find(x);
             int py = find(y);
-            if(px != py&&py == y ) parent[py] = px; 
+            if(px != py) parent[py] = px; 
             else return false; 
             return true;
         }
