@@ -1,0 +1,75 @@
+class Solution {
+    class Union{
+        int[] parent;
+        public Union(int size){
+            this.parent = new int[size+1];
+            for(int i = 0 ; i < size+1; i++) parent[i] = i;
+        }
+        public int find(int x){
+            if(x!=parent[x]) parent[x] = find(parent[x]);
+            return parent[x];
+        }
+        //x is parent ---->  y is child
+        public boolean union(int x, int y){
+            int px = find(x);
+            int py = find(y);
+            if(px != py&&py == y ) parent[py] = px; 
+            else return false; 
+            return true;
+        }
+    }
+    class Item{
+        int parent;
+        int index;
+        public Item(int p , int i){
+            this.parent = p;
+            this.index = i;
+        }
+    }
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+        
+        HashMap<Integer,Item> map = new HashMap<>();
+        boolean multi_p = false;
+        int last_pi = -1;
+        int prev_pi = -1;
+        for(int i = 0; i < edges.length; i++){
+            int[] edge =  edges[i];
+            int parent = edge[0];
+            int child = edge[1];
+            /* if exist one node have two parent, those two parent must have one edge is wrong, 
+            because of there is no duplicate edge, so it must be comflic.
+            The only thing we need do is try the last one ,then the first one to see which one could have a tree.*/            
+            if(!map.containsKey(child))map.put(child,new Item(parent,i));
+            else {multi_p = true; last_pi = i;prev_pi = map.get(child).index; break;}
+        }
+        
+        if(multi_p){
+                int[] check = frdc(edges,last_pi);
+                // if it become tree , means delete ith edge is good pick
+                if(check.length==0) return edges[last_pi];
+                else return edges[prev_pi];                
+        }
+        else return frdc(edges, -2);  // only exit circle
+        
+    }
+    public int[] frdc(int[][] edges,int delete) {
+        int len = edges.length;
+        Union u = new Union(len*2);
+        // child ----> (parent,index)
+        
+        for(int i =0; i< len; i++){
+            if(i == delete) continue;
+            int[] edge =  edges[i];
+            int parent = edge[0];
+            int child = edge[1];
+
+            //check circle
+            if(delete!=-1&&!u.union(parent,child)){
+                   return edge;
+            }
+           
+        }
+        return new int[0];
+    }
+    
+}
