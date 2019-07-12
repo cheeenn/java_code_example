@@ -1,0 +1,91 @@
+class Solution {
+    class Union{
+        int[] parent;
+        double[] val;
+        public Union(int size){
+            this.parent = new int[size];
+            this.val = new double[size];
+            Arrays.fill(val,1.0);
+            for(int i = 0 ; i< size; i++){
+                parent[i] = i;
+            }
+        }
+        
+        Deque<Double> q = new LinkedList<>();
+        double t = 1;
+        public int find(int x){
+            q.offer(val[x]);
+            if(x != parent[x]){        
+                parent[x]= find(parent[x]);
+            }
+            t*=q.pollLast();
+            val[x]=t;
+            
+            return parent[x];
+        }
+        // x = val[x]*y    use y be the head 
+        public void unionfind(int x, int y, double val){
+            if(this.val[x]==1)this.val[x] = val;
+            int px = find(x);
+            t=1;
+            int py = find(y);
+            t=1;
+            // union
+            if(px!=py){
+                if(px==x) parent[px]= y;
+                else {parent[py] = x;if(this.val[y]==1) this.val[y] = 1/val;}
+                
+            }
+        }
+
+    }
+    
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        int size = equations.size();
+        Union  u = new Union(size*2);
+        // map string <-> id 
+        HashMap<String,Integer> map = new HashMap<>();
+        int id = 0;
+        for(int i =0; i < size; i++){
+            List<String> equation = equations.get(i);
+            String a = equation.get(0);
+            String b = equation.get(1);
+            int ia = -1;
+            int ib = -1;
+            if(!map.containsKey(a)) {map.put(a,id);ia=id; id++;}
+            else ia = map.get(a);
+            if(!map.containsKey(b)) {map.put(b,id);ib=id; id++;}
+            else ib = map.get(b);
+            u.unionfind(ia,ib,values[i]);
+        }
+        int len = queries.size();
+        List<Double> ans = new ArrayList<>();
+        for(int i = 0 ; i<len ; i++){
+            List<String> query = queries.get(i);
+            String a = query.get(0);
+            String b = query.get(1);
+
+            if ( !map.containsKey(a) || !map.containsKey(b) ) {ans.add(-1.0); continue;}    // a, b not in the map
+            if(a.equals(b)) {ans.add(1.0); continue;}                                        // a == b in the map
+            int ia = map.get(a);
+            int ib = map.get(b);
+            int pa = u.find(ia);
+            u.t=1;
+            int pb = u.find(ib);
+            u.t=1;
+            double a_val = u.val[ia];
+            double b_val = u.val[ib];
+            
+            if(pa != pb)  ans.add(-1.0);                                        // a, b not in same union                            
+            else{  ans.add(a_val/b_val);}                                       // a * temp = head of the union ==> a = 1/temp * head of union
+        }   
+
+        double[] fina = new double[ans.size()];
+        int i =0;
+        for(double d:ans){
+            fina[i] = d;
+            i++;
+        }
+        return fina;
+    }
+}
