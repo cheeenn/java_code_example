@@ -64,7 +64,7 @@ class Solution {
             int child = edge[1];
 
             //check circle
-            if(delete!=-1&&!u.union(parent,child)){
+            if(!u.union(parent,child)){
                    return edge;
             }
            
