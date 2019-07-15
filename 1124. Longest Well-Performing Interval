@@ -1,0 +1,21 @@
+class Solution {
+    public int longestWPI(int[] hours) {
+        // first time this minus sum show up ----> index
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+        int ans = 0;
+        // denote >8 is +1, <=8 is -1
+        for(int i = 0; i< hours.length; i++){
+            sum+= hours[i]>8? 1:-1;
+            // if current sum is >0, this total [0,i] interval must be an answer
+            if(sum>0) ans= i+1;
+            else{
+                // record the first show up of this minus sum
+                map.putIfAbsent(sum,i);
+                //check the interval [index of first show up sum-1, i]
+                if(map.containsKey(sum-1)) ans = Math.max(ans,i-map.get(sum-1)); 
+            }
+        }
+        return ans;
+    }
+}
