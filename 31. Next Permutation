@@ -1,0 +1,42 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int len = nums.length;
+        for(int i=len-1; i >0; i--){          
+            //find the switch spot
+            if(i>0&&nums[i]>nums[i-1]){
+                int next = find(i,len-1,nums);
+                switchpos(i-1,next,nums);
+                reverse(i,len-1,nums);
+                return;
+            }
+            else if (i==1){
+                reverse(0,len-1,nums);
+                return;
+            }
+            
+        }
+        
+    }
+    public int find(int i , int j, int[] nums){
+        int min = j;
+        while(j>=i){
+            // remember the same value such as [1,5,1],so <=
+            if(nums[j]>nums[i-1]) if( nums[min]<=nums[i-1]||(nums[j]<nums[min])) min = j;
+            j--;
+        }
+        return min;
+    }
+    public void switchpos(int i , int j , int[] nums ){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    public void reverse(int i , int j , int[] nums){
+        int b = j;
+        for(int a = i; a<=(j+i)/2; a++){
+            int t = nums[i];
+            switchpos(a,b,nums);
+            b--;
+        }
+    }
+}
