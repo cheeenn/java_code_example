@@ -1,0 +1,29 @@
+class Solution {
+    public String getPermutation(int n, int k) {
+        List<String> table = new LinkedList<>(map(n));
+        if(n==1) return table.get(0);
+        k--;
+        String ans = "";
+        while(n>0){
+            int kth = kth(n--);
+            int at = k/kth;
+            k%=kth;
+            ans += table.get(at);
+            table.remove(at);
+        }
+
+        return ans;
+    }
+    public List<String> map(int n){
+        String s="1,2,3,4,5,6,7,8,9";
+        List<String> list = Arrays.asList(s.split(","));
+        return list;
+    }
+    public int kth(int n ){
+        int t =1;
+        for(int i=1; i<n; i++){
+            t*=i;
+        }
+        return t;
+    }
+}
