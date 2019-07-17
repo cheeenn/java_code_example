@@ -21,7 +21,7 @@ class Solution {
         int min = j;
         while(j>=i){
             // remember the same value such as [1,5,1],so <=
-            if(nums[j]>nums[i-1]) if( nums[min]<=nums[i-1]||(nums[j]<nums[min])) min = j;
+            if( nums[j]>nums[i-1]) {min = j; break;}
             j--;
         }
         return min;
