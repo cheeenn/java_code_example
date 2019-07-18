@@ -1,0 +1,28 @@
+class Solution {
+    class Car{
+        int index;
+        double time;
+        public Car(int i, double t){
+            this.index = i;
+            this.time = t;
+        }
+    }
+    public int carFleet(int target, int[] position, int[] speed) {
+        int N = position.length;
+        PriorityQueue<Car> pq = new PriorityQueue<>((x,y)->position[y.index] - position[x.index]);
+        if(N<1)return 0;
+        for(int i=0; i<position.length; i++ ){
+            double t =(double)(target - position[i])/speed[i];
+            pq.offer(new Car(i,t));
+        }
+        int ans = 1;
+
+        while(!pq.isEmpty()){
+            Car cur = pq.poll();
+            //if next pos car could catch up
+            while(!pq.isEmpty()&&pq.peek().time<=cur.time)pq.poll();
+            if(!pq.isEmpty())ans++;
+        }
+        return ans;
+    }
+}
