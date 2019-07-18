@@ -1,0 +1,31 @@
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> ans = new ArrayList<>();
+        String newp = transform(pattern);      
+
+        int len = pattern.length();
+        for(String w : words){
+            int l = w.length();
+            
+            //check length
+            if(l!=len)continue;
+            
+            //check rhythm
+            String cur = transform(w);
+            if(cur.equals(newp)) ans.add(w); 
+        }
+        return ans;
+    }
+    public String transform(String word){
+        int label =0; 
+        HashMap<Character,Integer> map = new HashMap<>();
+        char[] cs = word.toCharArray();
+        for(int i=0; i< cs.length; i++){
+             char c = cs[i];
+             if(map.containsKey(c)) cs[i] = (char)(map.get(c)+'0');
+             else {map.put(c,label); cs[i] = (char)(label+'0');label++;}
+        }
+        String p = new String(cs);
+        return p;
+    }
+}
