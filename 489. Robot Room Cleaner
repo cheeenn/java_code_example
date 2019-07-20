@@ -1,0 +1,76 @@
+/**
+ * // This is the robot's control interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Robot {
+ *     // Returns true if the cell in front is open and robot moves into the cell.
+ *     // Returns false if the cell in front is blocked and robot stays in the current cell.
+ *     public boolean move();
+ *
+ *     // Robot will stay in the same cell after calling turnLeft/turnRight.
+ *     // Each turn will be 90 degrees.
+ *     public void turnLeft();
+ *     public void turnRight();
+ *
+ *     // Clean the current cell.
+ *     public void clean();
+ * }
+ */
+class Solution {
+    int[][] dir = {{-1,0},{0,1},{1,0},{0,-1}};
+    Set<Index> visited = new HashSet();
+    Robot robot;
+    class Index{
+        int row;
+        int cal;
+        public Index(int i, int j){
+            this.row = i;
+            this.cal = j;
+        }
+        // if we want use new object in Hashset, we need override equals and hashcode
+        @Override 
+        public boolean equals(Object o){
+            if(this == o) return true;
+            if(!(o instanceof Index)) return false;
+            Index index = (Index) o;
+            return Objects.equals(row,index.row) && Objects.equals(cal,index.cal);
+        }
+        @Override
+        public int hashCode(){
+            return Objects.hash(row,cal);
+        }
+    }
+    public void cleanRoom(Robot robot) {
+        this.robot = robot;
+        dfs(0,0,0);
+        return;
+    }
+    public void dfs(int i , int j, int curd){
+        // mark this index visited
+        visited.add(new Index(i,j));
+        //clean this spot first
+        robot.clean();
+        
+        //try four dirction in clockwise  0-->up, 1-->right, 2-->down, 3-->left
+        for(int k = 0; k < 4; k++){
+            int updated = (curd+k)%4;
+            int row = dir[updated][0]+i;
+            int cal = dir[updated][1]+j;
+            //if not visited and reachable
+            if(!visited.contains(new Index(row, cal)) && robot.move()){
+                dfs(row,cal,updated);
+                backtrack();
+            }
+            // update the robot facing direction
+            robot.turnRight();
+        }
+    }
+    public void backtrack(){
+        // turn 180 degree to back the former cell
+        robot.turnRight();
+        robot.turnRight();
+        robot.move();
+        // turn 180 degree to be the initial direction
+        robot.turnRight();
+        robot.turnRight();
+    }
+}
