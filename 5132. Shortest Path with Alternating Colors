@@ -1,0 +1,53 @@
+class Solution {
+    HashMap<Integer,Set<Integer>> mapblue;
+    HashMap<Integer,Set<Integer>> mapred ;
+    Set<Integer> visitedb = new HashSet<>();
+    Set<Integer> visitedr = new HashSet<>();
+    public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
+        int[] ans = new int[n];
+        Arrays.fill(ans,-1);
+         ans[0] = 0;
+        
+        //build the map
+        mapblue = new HashMap<>();
+        mapred  = new HashMap<>();
+        for(int[] edge : red_edges) mapred.computeIfAbsent(edge[0],x->new HashSet<>()).add(edge[1]);
+        for(int[] edge : blue_edges)mapblue.computeIfAbsent(edge[0],x->new HashSet<>()).add(edge[1]); 
+
+        if(mapred.containsKey(0))dfs(ans,0,true,0);
+        visitedb = new HashSet<>();
+        visitedr = new HashSet<>();
+         if(mapblue.containsKey(0))dfs(ans,0,false,0);
+        return ans;
+    }
+
+    public void dfs(int[] ans, int cur, boolean curmap,int len){
+        //true red map, false blue map
+        HashMap<Integer,Set<Integer>> map = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+        
+        Queue<Integer> q = new LinkedList<>();
+        HashSet<Integer> filter = new HashSet<>();
+        
+        q.offer(cur);
+        while(!q.isEmpty()){
+            if(curmap) {map = mapred; visited = visitedr;}
+            else {map = mapblue; visited = visitedb;}
+            int size = q.size();
+            for(int i =0; i< size; i++){
+                int c = q.poll();
+                if(!visited.contains(c))visited.add(c);      // check the node be expend or not
+                else continue;       
+                if(ans[c]<0||ans[c]>len) ans[c] = len;
+                
+                 if(!map.containsKey(c)) continue;            // nothing after current node
+                 else{for(int temp : map.get(c)) filter.add(temp);}    
+            }
+            for(int t : filter) q.offer(t);
+            filter = new HashSet<>();
+            len++;
+            curmap = !curmap;
+        }
+
+    }
+}
