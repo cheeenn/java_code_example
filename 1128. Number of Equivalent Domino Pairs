@@ -1,0 +1,48 @@
+class Solution {
+    class Pair{
+        int a;
+        int b;
+        public Pair(int a , int b){
+            this.a = a;
+            this.b = b;
+        }
+        @Override
+        public boolean equals(Object o){
+            if(this == o) return true;
+            if(!(o instanceof Pair)) return false;
+            Pair pair = (Pair) o;
+            return Objects.equals(pair.a,a) && Objects.equals(pair.b,b);
+        }
+        @Override
+        public int hashCode(){
+            return Objects.hash(a,b);
+        }
+    }
+    public int numEquivDominoPairs(int[][] dominoes) {
+        HashMap<Pair,Integer> map = new HashMap<>();
+        int count =0;
+        for(int[] domino: dominoes){
+            int a = domino[0];
+            int b = domino[1];
+            Pair p1 = new Pair(a,b);
+            Pair p2 = new Pair(b,a);
+            if(map.containsKey(p1) ) map.put(p1,map.get(p1)+1);
+            else if(map.containsKey(p2) ) map.put(p2,map.get(p2)+1);
+            else{
+                map.put(p1,1);
+            }
+        }
+        for(int value : map.values()){
+            if(value>=2)count+= get(value);
+        }
+        return count;
+    }
+    public int get(int value){
+        int ans = 0;
+        while(value>=1){
+            value--;
+            ans+=value;
+        }
+        return ans;
+    }
+}
