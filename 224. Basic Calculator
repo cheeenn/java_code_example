@@ -1,0 +1,42 @@
+class Solution {
+    int index = 0;
+    public int calculate(String s) {
+        s=s.replaceAll(" ","");
+        int ans = get(s);
+        return ans;
+    }
+    public int get(String s){
+        if(index>=s.length()) return 0;
+        int prev =0;
+        int res = 0;
+        char prevsign = '+';
+        //normal calculate
+        while(index<s.length()){
+            int cur = 0;
+                
+            //build the number
+            if(s.charAt(index) =='('){index++; cur = get(s);}
+            else{
+                while(index<s.length()&&Character.isDigit(s.charAt(index)) ){
+                    cur=cur*10+(s.charAt(index) -'0');
+                    index++;
+                }                
+            }
+
+            //calculate the previous 
+            if(prevsign=='+'){res+=prev;prev=cur;}
+            else if(prevsign=='-'){res+=prev;prev=-cur;}
+            else if(prevsign=='*'){prev*=cur;}
+            else if(prevsign=='/'){prev/=cur;}
+            //break point
+            if(index<s.length()&&s.charAt(index) ==')'){index++; break;}                   
+            //update sign
+            if(index<s.length()) prevsign=s.charAt(index) ;
+            index++;
+            
+ 
+        }
+        return res+prev;
+    
+    }
+}
