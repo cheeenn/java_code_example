@@ -1,0 +1,22 @@
+class Solution {
+    public int tribonacci(int n) {
+
+        Deque<Integer> q = new LinkedList<>();
+        if(n==0) return 0;
+        if(n==1) return 1;
+        if(n==2) return 1;
+        q.offer(0);
+        q.offer(1);
+        q.offer(1);
+        int i = 2;
+        while(i<n){
+            i++;
+            int drop = q.pollFirst();
+            int a = q.peekFirst();
+            int b = q.peekLast();
+            int newc = drop+a+b;
+            q.offer(newc);
+        }
+        return q.peekLast();
+    }
+}
