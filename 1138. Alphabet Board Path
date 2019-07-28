@@ -1,0 +1,54 @@
+class Solution {
+    int i = 0;
+    int j = 0;
+    int limit = 25;
+    public String alphabetBoardPath(String target) {
+        int board[][] = new int[6][5];
+        String ans ="";
+        char[] cs = target.toCharArray();
+        for(int i =0; i < cs.length; i++){
+            ans+=findpath(cs[i]);
+        }
+        return ans;
+    }
+    public String findpath(char c){
+        String ans = "";
+        int index = c - 'a';
+        int prev = i*5;
+        int next = (i+1)*5;
+        while(index<prev){
+            i--;
+            ans+="U";
+            prev = i*5;  
+        }
+        //at next row, go down, make sure we cannot move out of the board
+        while(index>=next&&next<limit){
+            ans+="D";
+            i++;
+            next = (i+1)*5;
+        }
+        int cur = i*5+j;
+        //now make sure at which column
+        while(cur!=index){
+            //check if we want z and we are at the U
+            if(index == 25 ){
+                while(i*5 != cur){
+                    j--;ans+="L";
+                    cur = i*5+j;
+                }
+                ans+="D";
+                i++; 
+                break;
+            }
+            if(index!=25){
+                if(cur<index) {j++;ans+="R";}   //go left
+                else if(cur == index)break;
+                else {j--;ans+="L";}            //go right    
+                cur = i*5+j;
+            }
+            
+        }
+        ans+="!";
+        return ans;
+    }
+}
