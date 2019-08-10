@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isArmstrong(int N) {
+        int t = N;
+        int k = 0;
+        while(t>0){
+            t/=10;
+            k++;
+        }
+        int sum = 0;
+        t = N;
+        while(t>0){
+            int cur = t%10;
+            t /= 10;
+            sum+= power(cur,k);
+        }
+        if(sum==N) return true;
+        return false;
+
+    }
+    public int power(int cur , int k ){
+        int a = 1;
+        for(int i = 0; i<k; i++){
+            a*=cur;
+        }
+        return a;
+    }
+}
