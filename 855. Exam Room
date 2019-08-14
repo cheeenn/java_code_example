@@ -1,0 +1,48 @@
+class ExamRoom {
+    List<Integer> seat;
+    int start =0;
+    int end;
+    public ExamRoom(int N) {
+        this.end = N-1;
+        seat = new LinkedList<Integer>();
+    }
+    
+    public int seat() {
+        if(seat.size() == 0) {seat.add(start); return start;}
+        int max = Integer.MIN_VALUE;
+        int pick = -1;
+        int index = -1;
+        if(seat.get(0)!=0){
+            pick = 0;
+            max = seat.get(0)-0;
+            index = 0;
+        }
+        
+        int l =0, r = 0;
+        for(int i=0; i< seat.size();i++){
+            if(i == 0 ){l = seat.get(0); continue;}
+            else l = r;
+            r = seat.get(i);
+            int mid = (l+r)>>1;
+            int dt = mid-l;
+            if(dt>max) {max = dt; pick = mid;index = i;}
+        }
+        if(seat.get(seat.size()-1)<end){
+            l = seat.get(seat.size()-1);
+            r = end;
+            int dt = r-l;
+            if(dt>max) {max = dt; pick = r;index = seat.size();}             
+        }
+        seat.add(index,pick);
+        return pick;
+    }
+    
+    public void leave(int p) {
+       for(int i =0 ; i < seat.size();i++){
+           if(seat.get(i) == p) {
+               seat.remove(i);
+               return;
+           }
+       }
+    }
+}
