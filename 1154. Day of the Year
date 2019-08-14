@@ -1,0 +1,35 @@
+class Solution {
+    // sum of days of previous i mouth 
+    int[] prevsum = new int[12];
+    public int dayOfYear(String date) {
+        int a = 31;
+        int b = 30;
+        boolean odd = true;
+        for(int i =1; i<12; i++){
+            if(i==8) odd = !odd; // make sure AUG also have 31 days
+            if(odd)prevsum[i] =prevsum[i-1] + a;
+            else prevsum[i] =prevsum[i-1] + b;
+            odd=!odd;
+            // special case: Feb only have 28 days in normal years
+            if(i == 2) prevsum[i]-=2;
+
+        }
+        // notice substring is left close right open interval
+        int year = Integer.valueOf(date.substring(0,4));
+        int mouth = Integer.valueOf(date.substring(5,7));
+        int day = Integer.valueOf(date.substring(8));
+        boolean leap = false;
+       // System.out.println(year+" "+mouth+" "+day);
+        
+        // before Feb no need to consider leap year or not 
+        if(mouth>2) leap = judge(year);
+        int ans = prevsum[mouth-1]+day;
+        if(leap) ans+=1;
+        return ans;
+    }
+    public boolean judge(int year){
+        //century year
+        if(year%100==0) return (year%400) ==0 ? true : false;
+        else return (year%4)==0 ? true:false;
+    }
+}
