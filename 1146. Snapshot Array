@@ -1,10 +1,10 @@
 class SnapshotArray {
     List<HashMap<Integer, Integer>> snapshot = new ArrayList<>();
     HashMap<Integer, Integer> map = new HashMap<>();
-    int[] cur;
+
     
     public SnapshotArray(int length) {
-        this.cur = new int[length];
+       
     }
     
     public void set(int index, int val) {
