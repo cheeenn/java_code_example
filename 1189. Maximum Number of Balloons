@@ -1,0 +1,17 @@
+class Solution {
+    public int maxNumberOfBalloons(String text) {
+        int len = text.length();
+        int[] dic = new int[26];
+        for(char c : text.toCharArray()){
+            dic[c-'a']++;
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int i=0;i<26;i++){
+            //a,b,n
+            if(i=='a'-'a'||i=='b'-'a'||i=='n'-'a')ans = Math.min(dic[i],ans);
+            //l,o
+            if(i=='l'-'a'||i=='o'-'a')            ans = Math.min(dic[i]/2,ans);
+        }
+        return ans;
+    }
+}
