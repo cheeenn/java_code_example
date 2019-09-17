@@ -1,0 +1,11 @@
+# Write your MySQL query statement below
+SELECT project_id from Project
+group by project_id
+having count(project_id) = 
+(
+    select count(project_id)
+    from project
+    group by project_id
+    ORDER BY count(project_id)  DESC
+    LIMIT 1
+)
