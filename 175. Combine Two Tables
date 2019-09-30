@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+# we don't care about the person have the address or not, so using left join / right join
+select FirstName, LastName, City, State
+from Address
+right join Person
+on Person.PersonId = Address.PersonId
+
