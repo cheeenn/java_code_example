@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+select 
+Score ,
+#(select count(distinct Score) from Scores where Score >= s.Score ) rank
+(select count(*) from (select distinct Score x from Scores) t where x >= Score  )  rank
+from Scores s
+order by Score DESC
